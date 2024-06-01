@@ -16,7 +16,7 @@ const pageSchema = new Schema({
     },
     order: {
         type: Number,
-        default: 0,
+        default: 100,
     },
 });
 

@@ -1,7 +1,7 @@
 ### GET ALL PRODUCTS
 http://localhost:3000/api/products
 
-### GET RODUCT BY ID
+### GET PRODUCT BY ID
 http://localhost:3000/api/products/665adb1f1c98783b6bb4eeec
 
 ### CREATE PRODUCT

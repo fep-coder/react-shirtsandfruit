@@ -1,0 +1,26 @@
+### GET ALL PAGES
+http://localhost:3000/api/pages
+
+### GET PAGE BY ID
+http://localhost:3000/api/pages/665ae02516a925f9d042e8cd
+
+### CREATE PAGE
+POST http://localhost:3000/api/pages
+Content-Type: application/json
+
+{
+    "name": "Test Page",
+    "body": "Test Description"
+}
+
+### UPDATE PAGE
+PUT http://localhost:3000/api/pages/665ae02516a925f9d042e8cd
+Content-Type: application/json
+
+{
+    "name": "Test Page 2222222",
+    "body": "Test Description 22222222"
+}
+
+### DELETE PAGE
+DELETE http://localhost:3000/api/pages/665ae02516a925f9d042e8cd
