@@ -8,6 +8,7 @@ import { BrowserRouter, Route, Routes } from "react-router-dom";
 import Page from "./screens/Page.jsx";
 import ProductListing from "./screens/ProductListing.jsx";
 import ProductDetails from "./screens/ProductDetails.jsx";
+import Login from "./screens/Login.jsx";
 
 ReactDOM.createRoot(document.getElementById("root")).render(
     <React.StrictMode>
@@ -24,6 +25,7 @@ ReactDOM.createRoot(document.getElementById("root")).render(
                             path="/category/:slug?"
                             element={<ProductListing />}
                         />
+                        <Route path="/login" element={<Login />} />
                     </Route>
                 </Routes>
             </BrowserRouter>

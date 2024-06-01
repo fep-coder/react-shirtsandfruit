@@ -42,9 +42,9 @@ function Header() {
                     </ul>
                     <ul className="navbar-nav justify-content-end w-100">
                         <li className="nav-item">
-                            <a className="nav-link" href="#">
+                            <Link className="nav-link" to="/login">
                                 Log in
-                            </a>
+                            </Link>
                         </li>
                         <li className="nav-item">
                             <a className="nav-link" href="#">
