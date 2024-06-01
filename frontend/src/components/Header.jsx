@@ -1,6 +1,10 @@
+import { useGetPagesQuery } from "../slices/pagesApiSlice";
+
 function Header() {
+    const { data: pages, error } = useGetPagesQuery();
+
     return (
-        <nav className="navbar navbar-expand-lg bg-body-tertiary">
+        <nav className="navbar navbar-expand-sm bg-body-tertiary">
             <div className="container-fluid">
                 <a className="navbar-brand" href="#">
                     Shirts & Fruit
@@ -18,16 +22,22 @@ function Header() {
                 </button>
                 <div className="collapse navbar-collapse" id="navbarNav">
                     <ul className="navbar-nav">
-                        <li className="nav-item">
-                            <a className="nav-link" href="#">
-                                Features
-                            </a>
-                        </li>
-                        <li className="nav-item">
-                            <a className="nav-link" href="#">
-                                Pricing
-                            </a>
-                        </li>
+                        {error ? (
+                            <p>{error.data.message}</p>
+                        ) : (
+                            pages?.map((page) => (
+                                <li
+                                    className={`nav-item ${
+                                        page.slug === "home" ? "d-none" : ""
+                                    }`}
+                                    key={page._id}
+                                >
+                                    <a className="nav-link" href="#">
+                                        {page.name}
+                                    </a>
+                                </li>
+                            ))
+                        )}
                     </ul>
                     <ul className="navbar-nav justify-content-end w-100">
                         <li className="nav-item">
