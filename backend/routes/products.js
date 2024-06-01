@@ -65,4 +65,20 @@ router.delete("/:id", async function (req, res) {
     }
 });
 
+// GET /api/products/category/:slug - get products by category slug
+router.get("/category/:slug", async function (req, res) {
+    const slug = req.params.slug;
+
+    try {
+        const products =
+            slug === "all"
+                ? await Product.find({})
+                : await Product.find({ category: req.params.slug });
+
+        res.status(200).json(products);
+    } catch (error) {
+        res.status(500).json({ message: error.message });
+    }
+});
+
 module.exports = router;

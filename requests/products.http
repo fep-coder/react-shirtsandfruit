@@ -30,3 +30,6 @@ Content-Type: application/json
 
 ### DELETE PRODUCT
 DELETE http://localhost:3000/api/products/665adb1f1c98783b6bb4eeec
+
+### GET PRODUCTS BY CATEGORY SLUG
+http://localhost:3000/api/products/category/fruit
