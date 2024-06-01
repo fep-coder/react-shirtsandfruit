@@ -11,13 +11,49 @@ function Login() {
     const [errors, setErrors] = useState({});
 
     function handleChange(e) {
-        // setFormData({ ...formData, [e.target.id]: e.target.value });
+        const { name, value } = e.target;
+
+        setFormData({ ...formData, [name]: value });
+
+        setErrors({ ...errors, [name]: "" });
+    }
+
+    function handleSubmit(e) {
+        e.preventDefault();
+
+        const errors = {};
+
+        if (!formData.username.trim()) {
+            errors.username = "Username is required";
+        }
+
+        if (!formData.email.trim()) {
+            errors.email = "Email is required";
+        } else if (!/\S+@\S+\.\S+/.test(formData.email)) {
+            errors.email = "Email is invalid";
+        }
+
+        if (!formData.password.trim()) {
+            errors.password = "Password is required";
+        } else if (formData.password.length < 4) {
+            errors.password = "Password must be at least 4 characters";
+        }
+
+        if (formData.password !== formData.confirmPassword) {
+            errors.confirmPassword = "Passwords do not match";
+        }
+
+        setErrors(errors);
+
+        if (Object.keys(errors).length === 0) {
+            console.log(formData);
+        }
     }
 
     return (
         <div>
             <h2 className="text-center">Login</h2>
-            <form className="col-6 mx-auto">
+            <form onSubmit={handleSubmit} className="col-6 mx-auto">
                 <div className="mb-3">
                     <label htmlFor="username" className="form-label">
                         Username
@@ -25,14 +61,13 @@ function Login() {
                     <input
                         className="form-control"
                         id="username"
+                        name="username"
                         value={formData.username}
                         onChange={handleChange}
                     />
 
                     {errors.username && (
-                        <div className="invalid-feedback">
-                            {errors.username}
-                        </div>
+                        <span className="error">{errors.username}</span>
                     )}
                 </div>
 
@@ -44,11 +79,12 @@ function Login() {
                         type="email"
                         className="form-control"
                         id="email"
+                        name="email"
                         value={formData.email}
                         onChange={handleChange}
                     />
                     {errors.email && (
-                        <div className="invalid-feedback">{errors.email}</div>
+                        <span className="error">{errors.email}</span>
                     )}
                 </div>
 
@@ -60,13 +96,12 @@ function Login() {
                         type="password"
                         className="form-control"
                         id="password"
+                        name="password"
                         value={formData.password}
                         onChange={handleChange}
                     />
                     {errors.password && (
-                        <div className="invalid-feedback">
-                            {errors.password}
-                        </div>
+                        <span className="error">{errors.password}</span>
                     )}
                 </div>
 
@@ -78,13 +113,12 @@ function Login() {
                         type="password"
                         className="form-control"
                         id="confirmPassword"
+                        name="confirmPassword"
                         value={formData.confirmPassword}
                         onChange={handleChange}
                     />
                     {errors.confirmPassword && (
-                        <div className="invalid-feedback">
-                            {errors.confirmPassword}
-                        </div>
+                        <span className="error">{errors.confirmPassword}</span>
                     )}
                 </div>
 
