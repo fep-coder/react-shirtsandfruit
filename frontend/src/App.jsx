@@ -1,6 +1,7 @@
 import { Outlet } from "react-router-dom";
 import Footer from "./components/Footer";
 import Header from "./components/Header";
+import Categories from "./components/Categories";
 
 function App() {
     return (
@@ -9,7 +10,7 @@ function App() {
             <div className="container mt-3">
                 <div className="row">
                     <div className="col-4">
-                        <h4>Categories</h4>
+                        <Categories />
                     </div>
                     <div className="col">
                         <Outlet />
