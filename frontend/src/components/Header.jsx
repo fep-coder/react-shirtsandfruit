@@ -1,3 +1,4 @@
+import { Link } from "react-router-dom";
 import { useGetPagesQuery } from "../slices/pagesApiSlice";
 
 function Header() {
@@ -6,9 +7,9 @@ function Header() {
     return (
         <nav className="navbar navbar-expand-sm bg-body-tertiary">
             <div className="container-fluid">
-                <a className="navbar-brand" href="#">
+                <Link className="navbar-brand" to="/">
                     Shirts & Fruit
-                </a>
+                </Link>
                 <button
                     className="navbar-toggler"
                     type="button"
@@ -32,9 +33,9 @@ function Header() {
                                     }`}
                                     key={page._id}
                                 >
-                                    <a className="nav-link" href="#">
+                                    <Link className="nav-link" to={page.slug}>
                                         {page.name}
-                                    </a>
+                                    </Link>
                                 </li>
                             ))
                         )}

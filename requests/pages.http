@@ -1,8 +1,8 @@
 ### GET ALL PAGES
 http://localhost:3000/api/pages
 
-### GET PAGE BY ID
-http://localhost:3000/api/pages/665ae02516a925f9d042e8cd
+### GET PAGE BY SLUG
+http://localhost:3000/api/pages/about
 
 ### CREATE PAGE
 POST http://localhost:3000/api/pages

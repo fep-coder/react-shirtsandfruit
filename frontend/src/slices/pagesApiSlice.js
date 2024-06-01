@@ -6,7 +6,11 @@ const pagesApiSlice = apiSlice.injectEndpoints({
             query: () => "/api/pages",
             providesTags: ["Page"],
         }),
+        getPage: builder.query({
+            query: (slug) => `/api/pages/${slug}`,
+            providesTags: ["Page"],
+        }),
     }),
 });
 
-export const { useGetPagesQuery } = pagesApiSlice;
+export const { useGetPagesQuery, useGetPageQuery } = pagesApiSlice;
