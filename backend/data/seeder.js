@@ -1,9 +1,11 @@
 const Category = require("../models/category");
 const Product = require("../models/product");
 const Page = require("../models/page");
+const User = require("../models/user");
 const categories = require("../data/categories");
 const products = require("../data/products");
 const pages = require("../data/pages");
+const users = require("../data/users");
 const mongoose = require("mongoose");
 const dbconnect = require("../data/db");
 const path = require("path");
@@ -17,10 +19,12 @@ const seedData = async () => {
         await Category.deleteMany({});
         await Product.deleteMany({});
         await Page.deleteMany({});
+        await User.deleteMany({});
 
         await Category.insertMany(categories);
         await Product.insertMany(products);
         await Page.insertMany(pages);
+        await User.insertMany(users);
 
         console.log("Data imported!");
         process.exit(0);
@@ -35,6 +39,7 @@ const destroyData = async () => {
         await Category.deleteMany({});
         await Product.deleteMany({});
         await Page.deleteMany({});
+        await User.deleteMany({});
 
         console.log("Data destroyed!");
         process.exit(0);

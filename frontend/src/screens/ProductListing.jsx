@@ -12,7 +12,9 @@ function ProductListing() {
 
     return (
         <div className="row">
-            <h1 className="mb-5">{slug} products</h1>
+            <h1 className="mb-5">
+                {slug.charAt(0).toUpperCase() + slug.slice(1)} products
+            </h1>
             {products?.map((product) => (
                 <div className="col-4 mb-3" key={product._id}>
                     <Link to={`/product/${product._id}`}>
