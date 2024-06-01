@@ -8,9 +8,12 @@ function Categories() {
         <>
             <h4>Categories</h4>
             <ul className="list-group">
+                <li className="list-group-item">
+                    <Link to={`/category/all`}>All</Link>
+                </li>
                 {categories?.map((category) => (
                     <li className="list-group-item" key={category._id}>
-                        <Link to={`/categories/${category.slug}`}>
+                        <Link to={`/category/${category.slug}`}>
                             {category.name}
                         </Link>
                     </li>

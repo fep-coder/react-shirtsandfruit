@@ -6,6 +6,7 @@ import { Provider } from "react-redux";
 import store from "./store.js";
 import { BrowserRouter, Route, Routes } from "react-router-dom";
 import Page from "./screens/Page.jsx";
+import ProductListing from "./screens/ProductListing.jsx";
 
 ReactDOM.createRoot(document.getElementById("root")).render(
     <React.StrictMode>
@@ -14,6 +15,10 @@ ReactDOM.createRoot(document.getElementById("root")).render(
                 <Routes>
                     <Route path="/" element={<App />}>
                         <Route index path="/:slug?" element={<Page />} />
+                        <Route
+                            path="/category/:slug?"
+                            element={<ProductListing />}
+                        />
                     </Route>
                 </Routes>
             </BrowserRouter>
