@@ -1,0 +1,32 @@
+### GET ALL PRODUCTS
+http://localhost:3000/api/products
+
+### GET RODUCT BY ID
+http://localhost:3000/api/products/665adb1f1c98783b6bb4eeec
+
+### CREATE PRODUCT
+POST http://localhost:3000/api/products
+Content-Type: application/json
+
+{
+    "name": "Test Product 2",
+    "description": "Test Description",
+    "price": 5.99,
+    "category": "fruit",
+    "image": "test.png"
+}
+
+### UPDATE PRODUCT
+PUT http://localhost:3000/api/products/665adb1f1c98783b6bb4eeec
+Content-Type: application/json
+
+{
+    "name": "Test Product AAAAA",
+    "description": "Test Description AAAAAA",
+    "price": 7.99,
+    "category": "shirts",
+    "image": "test.png"
+}
+
+### DELETE PRODUCT
+DELETE http://localhost:3000/api/products/665adb1f1c98783b6bb4eeec

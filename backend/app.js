@@ -8,6 +8,7 @@ require("dotenv").config();
 dbconnect();
 
 const categoriesRouter = require("./routes/categories");
+const productsRouter = require("./routes/products");
 
 var app = express();
 
@@ -17,6 +18,7 @@ app.use(express.urlencoded({ extended: false }));
 app.use(cookieParser());
 app.use(express.static(path.join(__dirname, "public")));
 
-app.use("/categories", categoriesRouter);
+app.use("/api/categories", categoriesRouter);
+app.use("/api/products", productsRouter);
 
 module.exports = app;
