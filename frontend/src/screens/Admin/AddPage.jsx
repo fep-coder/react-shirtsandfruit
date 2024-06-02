@@ -2,6 +2,7 @@ import { useRef, useState } from "react";
 import { toast } from "react-toastify";
 import { useNavigate } from "react-router-dom";
 import JoditEditor from "jodit-react";
+import { useAddPageMutation } from "../../slices/pagesApiSlice";
 
 function AddPage() {
     const editor = useRef(null);
@@ -10,6 +11,8 @@ function AddPage() {
         name: "",
         body: "",
     });
+
+    const [addPage] = useAddPageMutation();
 
     const [errors, setErrors] = useState({});
 
@@ -54,6 +57,8 @@ function AddPage() {
 
         if (Object.keys(errors).length === 0) {
             try {
+                await addPage(formData).unwrap();
+                toast.success("Page added successfully");
                 navigate("/");
             } catch (error) {
                 toast.error(error?.data?.message);

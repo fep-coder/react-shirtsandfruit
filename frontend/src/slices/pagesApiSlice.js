@@ -18,8 +18,20 @@ const pagesApiSlice = apiSlice.injectEndpoints({
             }),
             invalidatesTags: ["Page"],
         }),
+        addPage: builder.mutation({
+            query: (page) => ({
+                url: "/api/pages",
+                method: "POST",
+                body: page,
+            }),
+            invalidatesTags: ["Page"],
+        }),
     }),
 });
 
-export const { useGetPagesQuery, useGetPageQuery, useReorderPagesMutation } =
-    pagesApiSlice;
+export const {
+    useGetPagesQuery,
+    useGetPageQuery,
+    useReorderPagesMutation,
+    useAddPageMutation,
+} = pagesApiSlice;
