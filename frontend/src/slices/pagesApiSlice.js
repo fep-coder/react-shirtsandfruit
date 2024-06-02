@@ -34,6 +34,13 @@ const pagesApiSlice = apiSlice.injectEndpoints({
             }),
             invalidatesTags: ["Page"],
         }),
+        deletePage: builder.mutation({
+            query: (id) => ({
+                url: `/api/pages/${id}`,
+                method: "DELETE",
+            }),
+            invalidatesTags: ["Page"],
+        }),
     }),
 });
 
@@ -43,4 +50,5 @@ export const {
     useReorderPagesMutation,
     useAddPageMutation,
     useEditPageMutation,
+    useDeletePageMutation,
 } = pagesApiSlice;

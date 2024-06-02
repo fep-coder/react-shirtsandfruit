@@ -1,6 +1,7 @@
 import { Link } from "react-router-dom";
 import Loader from "../../components/Loader";
 import {
+    useDeletePageMutation,
     useGetPagesQuery,
     useReorderPagesMutation,
 } from "../../slices/pagesApiSlice";
@@ -13,6 +14,7 @@ function Pages() {
     const [pages, setPages] = useState(data || []);
 
     const [reorderPages] = useReorderPagesMutation();
+    const [deletePage] = useDeletePageMutation();
 
     useEffect(() => {
         setPages(data);
@@ -47,7 +49,14 @@ function Pages() {
     };
 
     const deleteHandler = async (id) => {
-        console.log(id);
+        if (window.confirm("Are you sure?")) {
+            try {
+                await deletePage(id);
+                toast.success("Page deleted successfully");
+            } catch (error) {
+                toast.error(error.data.message);
+            }
+        }
     };
 
     if (isLoading) return <Loader />;
