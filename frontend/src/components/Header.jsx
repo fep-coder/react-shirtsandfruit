@@ -1,12 +1,23 @@
 import { Link } from "react-router-dom";
 import { useGetPagesQuery } from "../slices/pagesApiSlice";
-import { useSelector } from "react-redux";
+import { useDispatch, useSelector } from "react-redux";
 import AdminHeader from "./AdminHeader";
+import { useLogoutMutation } from "../slices/usersApiSlice";
+import { logout } from "../slices/authSlice";
 
 function Header() {
     const { data: pages, error } = useGetPagesQuery();
 
     const { userInfo } = useSelector((state) => state.auth);
+
+    const [logoutApiCall] = useLogoutMutation();
+
+    const dispatch = useDispatch();
+
+    const handleLogout = async () => {
+        await logoutApiCall();
+        dispatch(logout());
+    };
 
     return (
         <header>
@@ -50,16 +61,30 @@ function Header() {
                             )}
                         </ul>
                         <ul className="navbar-nav justify-content-end w-100">
-                            <li className="nav-item">
-                                <Link className="nav-link" to="/login">
-                                    Log in
-                                </Link>
-                            </li>
-                            <li className="nav-item">
-                                <Link className="nav-link" to="/register">
-                                    Register
-                                </Link>
-                            </li>
+                            {userInfo ? (
+                                <button
+                                    onClick={handleLogout}
+                                    className="btn btn-danger"
+                                >
+                                    Hi {userInfo.username}, log out
+                                </button>
+                            ) : (
+                                <>
+                                    <li className="nav-item">
+                                        <Link className="nav-link" to="/login">
+                                            Log in
+                                        </Link>
+                                    </li>
+                                    <li className="nav-item">
+                                        <Link
+                                            className="nav-link"
+                                            to="/register"
+                                        >
+                                            Register
+                                        </Link>
+                                    </li>
+                                </>
+                            )}
                         </ul>
                     </div>
                 </div>
