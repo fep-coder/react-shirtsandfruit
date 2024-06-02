@@ -39,6 +39,7 @@ router.post("/login", async function (req, res) {
         res.json({
             id: user._id,
             username: user.username,
+            isAdmin: user.isAdmin,
         });
     } else {
         res.status(401).json({ message: "Invalid username or password" });
