@@ -1,9 +1,11 @@
-import { useState } from "react";
-import { useDispatch } from "react-redux";
+import { useRef, useState } from "react";
 import { toast } from "react-toastify";
 import { useNavigate } from "react-router-dom";
+import JoditEditor from "jodit-react";
 
 function AddPage() {
+    const editor = useRef(null);
+
     const [formData, setFormData] = useState({
         name: "",
         body: "",
@@ -19,7 +21,16 @@ function AddPage() {
         setErrors({ ...errors, [name]: "" });
     }
 
-    const dispatch = useDispatch();
+    const handleFormChange = (name, value) => {
+        setFormData({ ...formData, [name]: value });
+
+        setErrors({ ...errors, [name]: "" });
+    };
+
+    const handleJoditChange = (content) => {
+        handleFormChange("body", content);
+    };
+
     const navigate = useNavigate();
 
     async function handleSubmit(e) {
@@ -35,8 +46,8 @@ function AddPage() {
 
         if (!formData.body.trim()) {
             errors.body = "Page body is required";
-        } else if (formData.name.length < 10) {
-            errors.body = "Page body must be at least 10 characters";
+        } else if (formData.body.length < 20) {
+            errors.body = "Page body must be at least 20 characters";
         }
 
         setErrors(errors);
@@ -53,7 +64,7 @@ function AddPage() {
     return (
         <div>
             <h2 className="text-center">Add Page</h2>
-            <form onSubmit={handleSubmit} className="col-6 mx-auto">
+            <form onSubmit={handleSubmit} className="col-10 mx-auto">
                 <div className="mb-3">
                     <label htmlFor="name" className="form-label">
                         Title
@@ -75,13 +86,12 @@ function AddPage() {
                     <label htmlFor="body" className="form-label">
                         Password
                     </label>
-                    <textarea
+                    <JoditEditor
+                        ref={editor}
                         name="body"
-                        id="body"
-                        className="form-control"
                         value={formData.body}
-                        onChange={handleChange}
-                    ></textarea>
+                        onChange={(newContent) => handleJoditChange(newContent)}
+                    />
                     {errors.body && (
                         <span className="error">{errors.body}</span>
                     )}
