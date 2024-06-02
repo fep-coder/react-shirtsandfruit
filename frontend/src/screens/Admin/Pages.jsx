@@ -1,9 +1,37 @@
 import { Link } from "react-router-dom";
 import Loader from "../../components/Loader";
 import { useGetPagesQuery } from "../../slices/pagesApiSlice";
+import { useEffect, useState } from "react";
 
 function Pages() {
-    const { data: pages, error, isLoading } = useGetPagesQuery();
+    const { data, error, isLoading } = useGetPagesQuery();
+
+    const [pages, setPages] = useState(data || []);
+
+    useEffect(() => {
+        setPages(data);
+    }, [data]);
+
+    const onDragStart = (e, index) => {
+        e.dataTransfer.setData("index", index);
+    };
+
+    const onDragOver = (e, slug) => {
+        if (slug !== "home") {
+            e.preventDefault();
+        }
+    };
+
+    const onDrop = async (e, index) => {
+        const draggedIndex = e.dataTransfer.getData("index");
+        const updatedPages = [...pages];
+        const movedPage = updatedPages.splice(draggedIndex, 1)[0];
+        updatedPages.splice(index, 0, movedPage);
+
+        setPages(updatedPages);
+
+        console.log(updatedPages);
+    };
 
     const deleteHandler = async (id) => {
         console.log(id);
@@ -15,7 +43,7 @@ function Pages() {
     return (
         <div>
             <h1>Admin Pages</h1>
-            <table className="table">
+            <table className="table sortable">
                 <thead>
                     <tr>
                         <th>ID</th>
@@ -24,8 +52,15 @@ function Pages() {
                     </tr>
                 </thead>
                 <tbody>
-                    {pages.map((page) => (
-                        <tr key={page._id}>
+                    {pages?.map((page, index) => (
+                        <tr
+                            key={page._id}
+                            className={page.slug}
+                            draggable={page.slug !== "home"}
+                            onDragStart={(e) => onDragStart(e, index)}
+                            onDragOver={(e) => onDragOver(e, page.slug)}
+                            onDrop={(e) => onDrop(e, index)}
+                        >
                             <td>{page._id}</td>
                             <td>{page.name}</td>
                             <td>
