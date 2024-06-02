@@ -1,12 +1,18 @@
 import { Link } from "react-router-dom";
 import Loader from "../../components/Loader";
-import { useGetPagesQuery } from "../../slices/pagesApiSlice";
+import {
+    useGetPagesQuery,
+    useReorderPagesMutation,
+} from "../../slices/pagesApiSlice";
 import { useEffect, useState } from "react";
+import { toast } from "react-toastify";
 
 function Pages() {
     const { data, error, isLoading } = useGetPagesQuery();
 
     const [pages, setPages] = useState(data || []);
+
+    const [reorderPages] = useReorderPagesMutation();
 
     useEffect(() => {
         setPages(data);
@@ -29,6 +35,15 @@ function Pages() {
         updatedPages.splice(index, 0, movedPage);
 
         setPages(updatedPages);
+
+        const indexedArray = updatedPages.map((page) => page._id);
+
+        try {
+            await reorderPages(indexedArray);
+            toast.success("Pages reordered successfully");
+        } catch (error) {
+            toast.error(error.data.message);
+        }
 
         console.log(updatedPages);
     };
