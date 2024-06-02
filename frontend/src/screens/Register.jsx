@@ -1,4 +1,7 @@
 import { useState } from "react";
+import { useNavigate } from "react-router-dom";
+import { useRegisterMutation } from "../slices/usersApiSlice";
+import { toast } from "react-toastify";
 
 function Register() {
     const [formData, setFormData] = useState({
@@ -18,7 +21,11 @@ function Register() {
         setErrors({ ...errors, [name]: "" });
     }
 
-    function handleSubmit(e) {
+    const navigate = useNavigate();
+
+    const [register] = useRegisterMutation();
+
+    async function handleSubmit(e) {
         e.preventDefault();
 
         const errors = {};
@@ -48,7 +55,13 @@ function Register() {
         setErrors(errors);
 
         if (Object.keys(errors).length === 0) {
-            console.log(formData);
+            try {
+                await register(formData).unwrap();
+                toast.success("Registration successful");
+                navigate("/login");
+            } catch (error) {
+                toast.error(error?.data?.message);
+            }
         }
     }
 

@@ -9,6 +9,7 @@ import Page from "./screens/Page.jsx";
 import ProductListing from "./screens/ProductListing.jsx";
 import ProductDetails from "./screens/ProductDetails.jsx";
 import Login from "./screens/Login.jsx";
+import Register from "./screens/Register.jsx";
 
 ReactDOM.createRoot(document.getElementById("root")).render(
     <React.StrictMode>
@@ -26,6 +27,7 @@ ReactDOM.createRoot(document.getElementById("root")).render(
                             element={<ProductListing />}
                         />
                         <Route path="/login" element={<Login />} />
+                        <Route path="/register" element={<Register />} />
                     </Route>
                 </Routes>
             </BrowserRouter>

@@ -4,7 +4,7 @@ const User = require("../models/user");
 const jwt = require("jsonwebtoken");
 
 // POST /api/users/register - create new user
-router.post("/", async function (req, res) {
+router.post("/register", async function (req, res) {
     const userExists = await User.findOne({ email: req.body.email });
 
     if (userExists) {
@@ -22,7 +22,7 @@ router.post("/", async function (req, res) {
 
 // POST /api/users/login - login user
 router.post("/login", async function (req, res) {
-    const user = await User.findOne({ email: req.body.username });
+    const user = await User.findOne({ username: req.body.username });
 
     if (user && (await user.matchPassword(req.body.password))) {
         const token = jwt.sign({ userId: user._id }, process.env.JWT_SECRET, {
@@ -41,7 +41,7 @@ router.post("/login", async function (req, res) {
             username: user.username,
         });
     } else {
-        res.status(401).json({ message: "Invalid email or password" });
+        res.status(401).json({ message: "Invalid username or password" });
     }
 });
 

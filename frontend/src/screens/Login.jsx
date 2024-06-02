@@ -1,4 +1,9 @@
 import { useState } from "react";
+import { useDispatch } from "react-redux";
+import { useLoginMutation } from "../slices/usersApiSlice";
+import { setCredentials } from "../slices/authSlice";
+import { toast } from "react-toastify";
+import { useNavigate } from "react-router-dom";
 
 function Login() {
     const [formData, setFormData] = useState({
@@ -16,7 +21,12 @@ function Login() {
         setErrors({ ...errors, [name]: "" });
     }
 
-    function handleSubmit(e) {
+    const dispatch = useDispatch();
+    const navigate = useNavigate();
+
+    const [login] = useLoginMutation();
+
+    async function handleSubmit(e) {
         e.preventDefault();
 
         const errors = {};
@@ -34,6 +44,16 @@ function Login() {
         }
 
         setErrors(errors);
+
+        if (Object.keys(errors).length === 0) {
+            try {
+                const userData = await login(formData).unwrap();
+                dispatch(setCredentials({ ...userData }));
+                navigate("/");
+            } catch (error) {
+                toast.error(error?.data?.message);
+            }
+        }
     }
 
     return (

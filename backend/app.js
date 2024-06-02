@@ -10,6 +10,7 @@ dbconnect();
 const categoriesRouter = require("./routes/categories");
 const productsRouter = require("./routes/products");
 const pagesRouter = require("./routes/pages");
+const usersRouter = require("./routes/users");
 
 var app = express();
 
@@ -22,5 +23,6 @@ app.use(express.static(path.join(__dirname, "public")));
 app.use("/api/categories", categoriesRouter);
 app.use("/api/products", productsRouter);
 app.use("/api/pages", pagesRouter);
+app.use("/api/users", usersRouter);
 
 module.exports = app;
