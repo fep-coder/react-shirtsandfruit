@@ -84,7 +84,7 @@ function Pages() {
                             <td>
                                 <Link
                                     className="btn btn-primary mx-2"
-                                    to={`/admin/pages/edit/${page._id}`}
+                                    to={`/admin/pages/edit/${page.slug}`}
                                 >
                                     Edit
                                 </Link>
