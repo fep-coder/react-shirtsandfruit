@@ -2,7 +2,7 @@ import { Link } from "react-router-dom";
 
 function AdminHeader() {
     return (
-        <nav className="navbar navbar-expand-sm">
+        <nav className="navbar navbar-expand-sm bg-dark" data-bs-theme="dark">
             <div className="container-fluid">
                 <div className="collapse navbar-collapse" id="navbarNav">
                     <ul className="navbar-nav">
