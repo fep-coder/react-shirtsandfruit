@@ -12,6 +12,7 @@ import Login from "./screens/Login.jsx";
 import Register from "./screens/Register.jsx";
 import AdminRoute from "./components/AdminRoute.jsx";
 import Pages from "./screens/Admin/Pages.jsx";
+import AddPage from "./screens/Admin/AddPage.jsx";
 
 ReactDOM.createRoot(document.getElementById("root")).render(
     <React.StrictMode>
@@ -33,6 +34,10 @@ ReactDOM.createRoot(document.getElementById("root")).render(
 
                         <Route path="" element={<AdminRoute />}>
                             <Route path="/admin/pages" element={<Pages />} />
+                            <Route
+                                path="/admin/pages/add"
+                                element={<AddPage />}
+                            />
                         </Route>
                     </Route>
                 </Routes>

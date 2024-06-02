@@ -44,8 +44,6 @@ function Pages() {
         } catch (error) {
             toast.error(error.data.message);
         }
-
-        console.log(updatedPages);
     };
 
     const deleteHandler = async (id) => {
@@ -58,6 +56,11 @@ function Pages() {
     return (
         <div>
             <h1>Admin Pages</h1>
+
+            <Link className="btn btn-primary" to="/admin/pages/add">
+                Add Page
+            </Link>
+
             <table className="table sortable">
                 <thead>
                     <tr>
