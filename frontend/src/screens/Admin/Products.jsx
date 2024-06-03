@@ -1,12 +1,25 @@
 import { Link } from "react-router-dom";
 import Loader from "../../components/Loader";
-import { useGetProductsQuery } from "../../slices/productsApiSlice";
+import {
+    useDeleteProductMutation,
+    useGetProductsQuery,
+} from "../../slices/productsApiSlice";
+import { toast } from "react-toastify";
 
 function Products() {
     const { data: products, isLoading, error } = useGetProductsQuery("all");
+    const [deleteProduct] = useDeleteProductMutation();
 
     const handleDelete = async (id) => {
-        console.log("delete", id);
+        if (window.confirm("Are you sure?")) {
+            try {
+                await deleteProduct(id);
+                toast.success("Product deleted successfully");
+            } catch (error) {
+                console.log(error);
+                toast.error("Failed to delete product");
+            }
+        }
     };
 
     if (isLoading) return <Loader />;

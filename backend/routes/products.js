@@ -48,7 +48,7 @@ router.post("/", upload.single("image"), async function (req, res) {
 
         const newProduct = await Product.create(req.body);
 
-        const folderPath = `../frontend/public/gallery/${newProduct._id}`;
+        const folderPath = `./frontend/public/gallery/${newProduct._id}`;
         if (!fs.existsSync(folderPath)) {
             fs.mkdirSync(folderPath, { recursive: true });
         }
@@ -163,6 +163,37 @@ router.post("/deleteimage", function (req, res) {
         res.status(200).json({ message: "Image deleted successfully" });
     } else {
         res.status(404).json({ message: "Image not found" });
+    }
+});
+
+// POST /api/products/:id - delete product
+router.post("/:id", async function (req, res) {
+    const product = await Product.findById(req.params.id);
+    const image = product.image;
+
+    try {
+        await Product.findByIdAndDelete(req.params.id);
+        const folderPath = `./frontend/public/gallery/${req.params.id}`;
+        if (fs.existsSync(folderPath)) {
+            fs.rmdirSync(folderPath, { recursive: true });
+        } else {
+            console.log("Folder not found");
+        }
+
+        if (image !== "noimage.jpg") {
+            const imagePath = `./frontend/public/images/${image}`;
+            if (fs.existsSync(imagePath)) {
+                fs.unlinkSync(imagePath, (err) => {
+                    if (err) console.log(err);
+                });
+            } else {
+                console.log("File not found");
+            }
+        }
+
+        res.status(200).json({ message: "Product deleted!" });
+    } catch (error) {
+        res.status(500).json({ message: error.message });
     }
 });
 
