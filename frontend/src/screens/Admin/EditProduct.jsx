@@ -6,6 +6,7 @@ import {
 import { Link, useNavigate, useParams } from "react-router-dom";
 import { toast } from "react-toastify";
 import Loader from "../../components/Loader";
+import MultipleImageUpload from "../../components/MultipleImageUpload";
 
 function EditProduct() {
     const [formData, setFormData] = useState({
@@ -251,6 +252,8 @@ function EditProduct() {
                     Back to all products
                 </Link>
             </form>
+
+            <MultipleImageUpload />
         </div>
     );
 }
