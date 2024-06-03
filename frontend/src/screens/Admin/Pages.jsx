@@ -64,7 +64,7 @@ function Pages() {
 
     return (
         <div>
-            <h1>Admin Pages</h1>
+            <h2>Admin Pages</h2>
 
             <Link className="btn btn-primary" to="/admin/pages/add">
                 Add Page

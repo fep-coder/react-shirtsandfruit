@@ -1,0 +1,67 @@
+import { Link } from "react-router-dom";
+import Loader from "../../components/Loader";
+import { useGetProductsQuery } from "../../slices/productsApiSlice";
+
+function Products() {
+    const { data: products, isLoading, error } = useGetProductsQuery("all");
+
+    const handleDelete = async (id) => {
+        console.log("delete", id);
+    };
+
+    if (isLoading) return <Loader />;
+    if (error) return <p>{error.data.message}</p>;
+
+    return (
+        <div>
+            <h2>Admin Products</h2>
+
+            <table className="table mb-5">
+                <thead>
+                    <tr>
+                        <th>Name</th>
+                        <th>Price</th>
+                        <th>Category</th>
+                        <th>Image</th>
+                        <th></th>
+                    </tr>
+                </thead>
+
+                <tbody>
+                    {products?.map((product) => (
+                        <tr key={product._id}>
+                            <td className="align-middle">{product.name}</td>
+                            <td className="align-middle">
+                                ${product.price.toFixed(2)}
+                            </td>
+                            <td className="align-middle">{product.category}</td>
+                            <td>
+                                <img
+                                    src={`/images/${product.image}`}
+                                    alt={product.name}
+                                    style={{ maxWidth: "100px" }}
+                                />
+                            </td>
+                            <td className="align-middle">
+                                <Link
+                                    className="btn btn-sm btn-primary mx-1"
+                                    to={`/admin/products/edit/${product._id}`}
+                                >
+                                    Edit
+                                </Link>
+                                <button
+                                    onClick={() => handleDelete(product._id)}
+                                    className="btn btn-sm btn-danger"
+                                >
+                                    Delete
+                                </button>
+                            </td>
+                        </tr>
+                    ))}
+                </tbody>
+            </table>
+        </div>
+    );
+}
+
+export default Products;
