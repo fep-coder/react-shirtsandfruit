@@ -15,6 +15,7 @@ import Pages from "./screens/Admin/Pages.jsx";
 import AddPage from "./screens/Admin/AddPage.jsx";
 import EditPage from "./screens/Admin/EditPage.jsx";
 import Products from "./screens/Admin/Products.jsx";
+import AddProduct from "./screens/Admin/AddProduct.jsx";
 
 ReactDOM.createRoot(document.getElementById("root")).render(
     <React.StrictMode>
@@ -47,6 +48,10 @@ ReactDOM.createRoot(document.getElementById("root")).render(
                             <Route
                                 path="/admin/products"
                                 element={<Products />}
+                            />
+                            <Route
+                                path="/admin/products/add"
+                                element={<AddProduct />}
                             />
                         </Route>
                     </Route>

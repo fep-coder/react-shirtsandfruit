@@ -14,7 +14,11 @@ function Products() {
 
     return (
         <div>
-            <h2>Admin Products</h2>
+            <h2 className="mb-3">Admin Products</h2>
+
+            <Link to="/admin/products/add" className="btn btn-primary">
+                Add Product
+            </Link>
 
             <table className="table mb-5">
                 <thead>
