@@ -1,4 +1,4 @@
-import { useState } from "react";
+import { useEffect, useState } from "react";
 
 function AddProduct() {
     const [formData, setFormData] = useState({
@@ -6,15 +6,36 @@ function AddProduct() {
         description: "",
         price: "",
         category: "",
-        image: "",
+        image: null,
     });
 
     const [errors, setErrors] = useState({});
 
-    const handleChange = (e) => {
-        const { name, value } = e.target;
+    const [selectedFile, setSelectedFile] = useState(null);
+    const [preview, setPreview] = useState(null);
 
-        setFormData({ ...formData, [name]: value });
+    useEffect(() => {
+        if (!selectedFile) {
+            setPreview(null);
+            return;
+        }
+
+        const objectUrl = URL.createObjectURL(selectedFile);
+        setPreview(objectUrl);
+
+        return () => URL.revokeObjectURL(objectUrl);
+    }, [selectedFile]);
+
+    const handleChange = (e) => {
+        const { name, value, type } = e.target;
+
+        if (type === "file") {
+            setFormData({ ...formData, [name]: e.target.files[0] });
+
+            setSelectedFile(e.target.files[0]);
+        } else {
+            setFormData({ ...formData, [name]: value });
+        }
 
         setErrors({ ...errors, [name]: "" });
     };
@@ -46,10 +67,16 @@ function AddProduct() {
             errors.category = "Product category is required";
         }
 
-        const extension = formData.image.split(".").pop().toLowerCase();
-        const allowedExtensions = ["jpg", "jpeg", "png"];
-        if (!allowedExtensions.includes(extension)) {
-            errors.image = "Please upload a valid image (jpg, jpeg, or png)";
+        if (formData.image !== null) {
+            const extension = formData.image.name
+                .split(".")
+                .pop()
+                .toLowerCase();
+            const allowedExtensions = ["jpg", "jpeg", "png"];
+            if (!allowedExtensions.includes(extension)) {
+                errors.image =
+                    "Please upload a valid image (jpg, jpeg, or png)";
+            }
         }
 
         setErrors(errors);
@@ -142,9 +169,15 @@ function AddProduct() {
                         className="form-control"
                         id="image"
                         name="image"
-                        value={formData.image}
                         onChange={handleChange}
                     />
+
+                    {selectedFile && (
+                        <img
+                            src={preview}
+                            style={{ width: "200px", marginTop: "10px" }}
+                        />
+                    )}
 
                     {errors.image && (
                         <span className="error">{errors.image}</span>
