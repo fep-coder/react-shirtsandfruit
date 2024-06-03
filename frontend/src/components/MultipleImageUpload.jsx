@@ -1,9 +1,14 @@
 import { useState } from "react";
+import { useUploadMultipleImagesMutation } from "../slices/productsApiSlice";
+import { toast } from "react-toastify";
+import Loader from "./Loader";
 
-function MultipleImageUpload() {
+function MultipleImageUpload({ id }) {
     const [errors, setErrors] = useState([]);
 
-    const handleChange = (e) => {
+    const [upload, { isLoading }] = useUploadMultipleImagesMutation();
+
+    const handleChange = async (e) => {
         const selectedFiles = Array.from(e.target.files);
 
         const selectedImages = selectedFiles.filter(
@@ -22,15 +27,29 @@ function MultipleImageUpload() {
             setErrors(errorMessages);
         }
 
-        console.log(selectedFiles);
+        try {
+            const toUpload = new FormData();
+            selectedImages.forEach((image) => {
+                toUpload.append("images", image);
+            });
+            toUpload.append("id", id);
+
+            await upload(toUpload);
+
+            toast.success("Images uploaded successfully");
+        } catch (error) {
+            console.log(error);
+            toast.error("Failed to upload images.");
+        }
     };
 
     return (
-        <div className="mt-3">
+        <div className="mt-3 position-relative">
             <h2>Multiple Image Upload</h2>
 
             <input type="file" multiple onChange={handleChange} />
 
+            {isLoading && <Loader />}
             {errors.length > 0 && (
                 <div>
                     {errors.map((error, index) => (

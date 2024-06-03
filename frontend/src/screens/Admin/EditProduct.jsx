@@ -253,7 +253,7 @@ function EditProduct() {
                 </Link>
             </form>
 
-            <MultipleImageUpload />
+            <MultipleImageUpload id={product._id} />
         </div>
     );
 }

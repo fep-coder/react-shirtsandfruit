@@ -3,6 +3,7 @@ var router = express.Router();
 const Product = require("../models/product");
 const multer = require("multer");
 const fs = require("fs");
+
 // GET /api/products - get all products
 router.get("/", async function (req, res, next) {
     try {
@@ -45,7 +46,12 @@ router.post("/", upload.single("image"), async function (req, res) {
         req.body.slug = req.body.name.toLowerCase().trim().replace(/ /g, "-");
         req.body.image = req.file ? req.file.filename : "noimage.jpg";
 
-        await Product.create(req.body);
+        const newProduct = await Product.create(req.body);
+
+        const folderPath = `../frontend/public/gallery/${newProduct._id}`;
+        if (!fs.existsSync(folderPath)) {
+            fs.mkdirSync(folderPath, { recursive: true });
+        }
 
         res.status(201).json({ message: "Product created" });
     } catch (error) {
@@ -104,4 +110,28 @@ router.get("/category/:slug", async function (req, res) {
     }
 });
 
+// POST /api/products/multiupload/:id
+router.post("/multiupload/:id", async function (req, res) {
+    const id = req.params.id;
+    const folderPath = `../frontend/public/gallery/${id}`;
+
+    const storage = multer.diskStorage({
+        destination: function (req, file, cb) {
+            cb(null, "./frontend/public/gallery/" + id);
+        },
+        filename: function (req, file, cb) {
+            cb(null, Date.now() + "-" + file.originalname);
+        },
+    });
+
+    const upload = multer({ storage: storage });
+
+    upload.array("images")(req, res, function (error) {
+        if (error) {
+            return res.status(500).json({ message: error.message });
+        }
+
+        res.status(200).json({ message: "Files uploaded successfully" });
+    });
+});
 module.exports = router;

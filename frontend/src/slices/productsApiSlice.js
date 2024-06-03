@@ -26,6 +26,14 @@ const productsApiSlice = apiSlice.injectEndpoints({
             }),
             invalidatesTags: ["Product"],
         }),
+        uploadMultipleImages: builder.mutation({
+            query: (formData) => ({
+                url: `/api/products/multiupload/${formData.get("id")}`,
+                method: "POST",
+                body: formData,
+            }),
+            invalidatesTags: ["Product"],
+        }),
     }),
 });
 
@@ -34,4 +42,5 @@ export const {
     useGetProductQuery,
     useAddProductMutation,
     useEditProductMutation,
+    useUploadMultipleImagesMutation,
 } = productsApiSlice;
