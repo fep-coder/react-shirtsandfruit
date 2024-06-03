@@ -11,6 +11,7 @@ const dbconnect = require("../data/db");
 const path = require("path");
 const dotenv = require("dotenv");
 dotenv.config({ path: path.resolve(__dirname, "..", "..", ".env") });
+const fs = require("fs");
 
 dbconnect();
 
@@ -22,9 +23,15 @@ const seedData = async () => {
         await User.deleteMany({});
 
         await Category.insertMany(categories);
-        await Product.insertMany(products);
+        const insertedProducts = await Product.insertMany(products);
         await Page.insertMany(pages);
         await User.insertMany(users);
+
+        insertedProducts.forEach((product) => {
+            const id = product._id.toString();
+            const folderPath = `../frontend/public/gallery/${id}`;
+            fs.mkdirSync(folderPath, { recursive: true });
+        });
 
         console.log("Data imported!");
         process.exit(0);
@@ -37,9 +44,20 @@ const seedData = async () => {
 const destroyData = async () => {
     try {
         await Category.deleteMany({});
-        await Product.deleteMany({});
         await Page.deleteMany({});
         await User.deleteMany({});
+
+        const products = await Product.find({});
+        products.forEach((product) => {
+            const id = product._id.toString();
+            const folderPath = `../frontend/public/gallery/${id}`;
+
+            if (fs.existsSync(folderPath)) {
+                fs.rmSync(folderPath, { recursive: true });
+            }
+        });
+
+        await Product.deleteMany({});
 
         console.log("Data destroyed!");
         process.exit(0);
