@@ -2,7 +2,7 @@ var express = require("express");
 var router = express.Router();
 const Product = require("../models/product");
 const multer = require("multer");
-
+const fs = require("fs");
 // GET /api/products - get all products
 router.get("/", async function (req, res, next) {
     try {
@@ -54,12 +54,23 @@ router.post("/", upload.single("image"), async function (req, res) {
 });
 
 // PUT /api/products/:id - update product
-router.put("/:id", async function (req, res) {
+router.put("/:id", upload.single("image"), async function (req, res) {
     try {
         req.body.slug = req.body.name.toLowerCase().trim().replace(/ /g, "-");
-        req.body.image = req.body.image || "noimage.jpg";
+        req.body.image = req.file ? req.file.filename : req.body.productImage;
 
         await Product.findByIdAndUpdate(req.params.id, req.body);
+
+        const oldProductImage = req.file ? req.body.productImage : null;
+
+        if (oldProductImage && oldProductImage !== "noimage.jpg") {
+            const imagePath = `./frontend/public/images/${oldProductImage}`;
+            if (fs.existsSync(imagePath)) {
+                fs.unlinkSync(imagePath);
+            } else {
+                console.log("File not found");
+            }
+        }
 
         res.status(200).json({ message: "Product updated!" });
     } catch (error) {
