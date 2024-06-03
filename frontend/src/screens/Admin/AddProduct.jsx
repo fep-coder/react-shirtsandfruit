@@ -1,4 +1,7 @@
 import { useEffect, useState } from "react";
+import { useAddProductMutation } from "../../slices/productsApiSlice";
+import { useNavigate } from "react-router-dom";
+import { toast } from "react-toastify";
 
 function AddProduct() {
     const [formData, setFormData] = useState({
@@ -10,6 +13,8 @@ function AddProduct() {
     });
 
     const [errors, setErrors] = useState({});
+    const navigate = useNavigate();
+    const [addProduct] = useAddProductMutation();
 
     const [selectedFile, setSelectedFile] = useState(null);
     const [preview, setPreview] = useState(null);
@@ -82,7 +87,22 @@ function AddProduct() {
         setErrors(errors);
 
         if (Object.keys(errors).length === 0) {
-            console.log("Form submitted:", formData);
+            // console.log("Form submitted:", formData);
+
+            const formDataToSend = new FormData();
+            formDataToSend.append("name", formData.name);
+            formDataToSend.append("description", formData.description);
+            formDataToSend.append("price", formData.price);
+            formDataToSend.append("category", formData.category);
+            formDataToSend.append("image", formData.image);
+
+            try {
+                await addProduct(formDataToSend).unwrap();
+                toast.success("Product added successfully");
+                navigate("/admin/products");
+            } catch (error) {
+                toast.error(error.data.message);
+            }
         }
     };
 

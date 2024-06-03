@@ -1,6 +1,7 @@
 var express = require("express");
 var router = express.Router();
 const Product = require("../models/product");
+const multer = require("multer");
 
 // GET /api/products - get all products
 router.get("/", async function (req, res, next) {
@@ -27,11 +28,22 @@ router.get("/:id", async function (req, res) {
     }
 });
 
+const storage = multer.diskStorage({
+    destination: function (req, file, cb) {
+        cb(null, "./frontend/public/images");
+    },
+    filename: function (req, file, cb) {
+        cb(null, Date.now() + "-" + file.originalname);
+    },
+});
+
+const upload = multer({ storage: storage });
+
 // POST /api/products - create new product
-router.post("/", async function (req, res) {
+router.post("/", upload.single("image"), async function (req, res) {
     try {
         req.body.slug = req.body.name.toLowerCase().trim().replace(/ /g, "-");
-        req.body.image = req.body.image || "noimage.jpg";
+        req.body.image = req.file ? req.file.filename : "noimage.jpg";
 
         await Product.create(req.body);
 
