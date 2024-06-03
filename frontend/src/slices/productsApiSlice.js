@@ -34,6 +34,10 @@ const productsApiSlice = apiSlice.injectEndpoints({
             }),
             invalidatesTags: ["Product"],
         }),
+        getProductImages: builder.query({
+            query: (id) => `/api/products/images/${id}`,
+            providesTags: ["Product"],
+        }),
     }),
 });
 
@@ -43,4 +47,5 @@ export const {
     useAddProductMutation,
     useEditProductMutation,
     useUploadMultipleImagesMutation,
+    useGetProductImagesQuery,
 } = productsApiSlice;

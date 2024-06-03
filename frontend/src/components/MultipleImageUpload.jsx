@@ -1,5 +1,8 @@
 import { useState } from "react";
-import { useUploadMultipleImagesMutation } from "../slices/productsApiSlice";
+import {
+    useGetProductImagesQuery,
+    useUploadMultipleImagesMutation,
+} from "../slices/productsApiSlice";
 import { toast } from "react-toastify";
 import Loader from "./Loader";
 
@@ -7,6 +10,10 @@ function MultipleImageUpload({ id }) {
     const [errors, setErrors] = useState([]);
 
     const [upload, { isLoading }] = useUploadMultipleImagesMutation();
+
+    const { data: images } = useGetProductImagesQuery(id);
+
+    const handleDelete = async (image) => {};
 
     const handleChange = async (e) => {
         const selectedFiles = Array.from(e.target.files);
@@ -59,6 +66,26 @@ function MultipleImageUpload({ id }) {
                     ))}
                 </div>
             )}
+
+            <div className="d-flex flex-md-row flex-column">
+                {images?.map((image) => (
+                    <div key={image}>
+                        <img
+                            src={`/gallery/${id}/${image}`}
+                            style={{ width: "100px", margin: "10px" }}
+                        />
+
+                        <button
+                            className="btn btn-danger btn-sm"
+                            onClick={() => {
+                                handleDelete(image);
+                            }}
+                        >
+                            Delete
+                        </button>
+                    </div>
+                ))}
+            </div>
         </div>
     );
 }

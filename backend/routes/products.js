@@ -134,4 +134,23 @@ router.post("/multiupload/:id", async function (req, res) {
         res.status(200).json({ message: "Files uploaded successfully" });
     });
 });
+
+// GET /api/products/images/:id - get images by product id
+router.get("/images/:id", async function (req, res) {
+    const id = req.params.id;
+    const folderPath = `./frontend/public/gallery/${id}`;
+
+    if (!fs.existsSync(folderPath)) {
+        return res.status(404).json({ message: "Folder not found" });
+    }
+
+    fs.readdir(folderPath, function (err, files) {
+        if (err) {
+            return res.status(500).json({ message: "Error reading folder" });
+        }
+
+        res.json(files);
+    });
+});
+
 module.exports = router;
