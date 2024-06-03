@@ -9,15 +9,60 @@ function AddProduct() {
         image: "",
     });
 
+    const [errors, setErrors] = useState({});
+
     const handleChange = (e) => {
         const { name, value } = e.target;
+
         setFormData({ ...formData, [name]: value });
+
+        setErrors({ ...errors, [name]: "" });
+    };
+
+    const handleSubmit = async (e) => {
+        e.preventDefault();
+
+        const errors = {};
+
+        if (!formData.name.trim()) {
+            errors.name = "Product name is required";
+        } else if (formData.name.length < 4) {
+            errors.name = "Product name must be at least 4 characters";
+        }
+
+        if (!formData.description.trim()) {
+            errors.description = "Product description is required";
+        } else if (formData.description.length < 10) {
+            errors.description =
+                "Product description must be at least 10 characters";
+        }
+
+        const priceRegex = /^[0-9]+(\.[0-9]{1,2})?$/;
+        if (!priceRegex.test(formData.price.toString())) {
+            errors.price = "Please enter a valid price (e.g. 10 or 10.99)";
+        }
+
+        if (!formData.category.trim()) {
+            errors.category = "Product category is required";
+        }
+
+        const extension = formData.image.split(".").pop().toLowerCase();
+        const allowedExtensions = ["jpg", "jpeg", "png"];
+        if (!allowedExtensions.includes(extension)) {
+            errors.image = "Please upload a valid image (jpg, jpeg, or png)";
+        }
+
+        setErrors(errors);
+
+        if (Object.keys(errors).length === 0) {
+            console.log("Form submitted:", formData);
+        }
     };
 
     return (
         <div>
             <h2>Add Product</h2>
-            <form>
+            <form onSubmit={handleSubmit}>
                 <div className="mb-3">
                     <label htmlFor="name" className="form-label">
                         Name
@@ -30,6 +75,10 @@ function AddProduct() {
                         value={formData.name}
                         onChange={handleChange}
                     />
+
+                    {errors.name && (
+                        <span className="error">{errors.name}</span>
+                    )}
                 </div>
                 <div className="mb-3">
                     <label htmlFor="description" className="form-label">
@@ -43,6 +92,10 @@ function AddProduct() {
                         value={formData.description}
                         onChange={handleChange}
                     />
+
+                    {errors.description && (
+                        <span className="error">{errors.description}</span>
+                    )}
                 </div>
                 <div className="mb-3">
                     <label htmlFor="price" className="form-label">
@@ -56,6 +109,9 @@ function AddProduct() {
                         value={formData.price}
                         onChange={handleChange}
                     />
+                    {errors.price && (
+                        <span className="error">{errors.price}</span>
+                    )}
                 </div>
                 <div className="mb-3">
                     <label htmlFor="category" className="form-label">
@@ -72,6 +128,10 @@ function AddProduct() {
                         <option value="shirts">Shirts</option>
                         <option value="fruit">Fruit</option>
                     </select>
+
+                    {errors.category && (
+                        <span className="error">{errors.category}</span>
+                    )}
                 </div>
                 <div className="mb-3">
                     <label htmlFor="image" className="form-label">
@@ -85,6 +145,10 @@ function AddProduct() {
                         value={formData.image}
                         onChange={handleChange}
                     />
+
+                    {errors.image && (
+                        <span className="error">{errors.image}</span>
+                    )}
                 </div>
                 <button className="btn btn-primary">Add Product</button>
             </form>
