@@ -1,5 +1,6 @@
 import { useState } from "react";
 import {
+    useDeleteGalleryImageMutation,
     useGetProductImagesQuery,
     useUploadMultipleImagesMutation,
 } from "../slices/productsApiSlice";
@@ -10,10 +11,18 @@ function MultipleImageUpload({ id }) {
     const [errors, setErrors] = useState([]);
 
     const [upload, { isLoading }] = useUploadMultipleImagesMutation();
-
     const { data: images } = useGetProductImagesQuery(id);
+    const [deleteImage] = useDeleteGalleryImageMutation();
 
-    const handleDelete = async (image) => {};
+    const handleDelete = async (image) => {
+        try {
+            await deleteImage({ id, image });
+            toast.success("Image deleted successfully");
+        } catch (error) {
+            console.log(error);
+            toast.error("Failed to delete image");
+        }
+    };
 
     const handleChange = async (e) => {
         const selectedFiles = Array.from(e.target.files);
@@ -86,6 +95,7 @@ function MultipleImageUpload({ id }) {
                     </div>
                 ))}
             </div>
+            {!images?.length && <h5 className="mt-3">No images uploaded</h5>}
         </div>
     );
 }

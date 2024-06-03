@@ -153,4 +153,17 @@ router.get("/images/:id", async function (req, res) {
     });
 });
 
+// POST /api/products/deleteimage - delete image
+router.post("/deleteimage", function (req, res) {
+    const { id, image } = req.body;
+    const imagePath = `./frontend/public/gallery/${id}/${image}`;
+
+    if (fs.existsSync(imagePath)) {
+        fs.unlinkSync(imagePath);
+        res.status(200).json({ message: "Image deleted successfully" });
+    } else {
+        res.status(404).json({ message: "Image not found" });
+    }
+});
+
 module.exports = router;
