@@ -2,11 +2,20 @@ import { useParams } from "react-router-dom";
 import { useGetProductQuery } from "../slices/productsApiSlice";
 import Loader from "../components/Loader";
 import ProductGallery from "../components/ProductGallery";
+import { useDispatch } from "react-redux";
+import { addToCart } from "../slices/cartSlice";
+import { toast } from "react-toastify";
 
 function ProductDetails() {
     const { id } = useParams();
+    const dispatch = useDispatch();
 
     const { data: product, isLoading, error } = useGetProductQuery(id);
+
+    const handleAddToCart = () => {
+        dispatch(addToCart({ ...product, quantity: 1 }));
+        toast.success("Product added to cart");
+    };
 
     if (isLoading) return <Loader />;
     if (error) return <p>{error.data.message}</p>;
@@ -24,7 +33,9 @@ function ProductDetails() {
                 <h2>{product.name}</h2>
                 <div>{product.description}</div>
                 <p>Price: ${product.price.toFixed(2)}</p>
-                <button className="btn btn-primary">Add to cart</button>
+                <button className="btn btn-primary" onClick={handleAddToCart}>
+                    Add to cart
+                </button>
             </div>
             <ProductGallery id={id} />
         </div>
