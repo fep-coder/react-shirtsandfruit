@@ -27,16 +27,14 @@ router.post("/login", async function (req, res) {
 
     if (user && (await user.matchPassword(req.body.password))) {
         const token = jwt.sign({ userId: user._id }, process.env.JWT_SECRET, {
-            // expiresIn: "1d",
-            expiresIn: "2s",
+            expiresIn: "1d",
         });
 
         res.cookie("jwt", token, {
             httpOnly: true,
             sameSite: "Strict",
             secure: process.env.NODE_ENV === "production",
-            // maxAge: 86400000,
-            maxAge: 2000,
+            maxAge: 86400000,
         });
 
         res.json({

@@ -1,6 +1,7 @@
 import { useParams } from "react-router-dom";
 import { useGetProductQuery } from "../slices/productsApiSlice";
 import Loader from "../components/Loader";
+import ProductGallery from "../components/ProductGallery";
 
 function ProductDetails() {
     const { id } = useParams();
@@ -25,6 +26,7 @@ function ProductDetails() {
                 <p>Price: ${product.price.toFixed(2)}</p>
                 <button className="btn btn-primary">Add to cart</button>
             </div>
+            <ProductGallery id={id} />
         </div>
     );
 }

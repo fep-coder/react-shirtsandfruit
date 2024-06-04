@@ -14,7 +14,7 @@ function App() {
                     <div className="col-4">
                         <Categories />
                     </div>
-                    <div className="col">
+                    <div className="col-8">
                         <Outlet />
                     </div>
                 </div>
