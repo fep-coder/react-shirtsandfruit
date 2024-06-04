@@ -13,4 +13,16 @@ router.post("/", loggedIn, async function (req, res, next) {
     }
 });
 
+// GET /api/orders/profile - get all user's orders
+router.get("/profile", loggedIn, async function (req, res, next) {
+    try {
+        const orders = await Order.find({ user: req.user._id }).sort({
+            createdAt: "desc",
+        });
+        res.status(200).json(orders);
+    } catch (error) {
+        res.status(500).json({ message: error.message });
+    }
+});
+
 module.exports = router;

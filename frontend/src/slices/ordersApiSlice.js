@@ -10,7 +10,11 @@ const ordersApiSlice = apiSlice.injectEndpoints({
             }),
             invalidatesTags: ["Order"],
         }),
+        getUserOrders: builder.query({
+            query: () => "/api/orders/profile",
+            providesTags: ["Order"],
+        }),
     }),
 });
 
-export const { useCreateOrderMutation } = ordersApiSlice;
+export const { useCreateOrderMutation, useGetUserOrdersQuery } = ordersApiSlice;
