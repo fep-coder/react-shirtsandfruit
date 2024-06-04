@@ -1,4 +1,4 @@
-import { useEffect, useState } from "react";
+import { useEffect, useRef, useState } from "react";
 import { useNavigate } from "react-router-dom";
 import { useRegisterMutation } from "../slices/usersApiSlice";
 import { toast } from "react-toastify";
@@ -15,11 +15,19 @@ function Register() {
     const [errors, setErrors] = useState({});
 
     const { userInfo } = useSelector((state) => state.auth);
+
+    const navigate = useNavigate();
+
     useEffect(() => {
         if (userInfo) {
             navigate("/");
         }
-    });
+    }, [userInfo, navigate]);
+
+    const inputRef = useRef(null);
+    useEffect(() => {
+        inputRef.current.focus();
+    }, []);
 
     function handleChange(e) {
         const { name, value } = e.target;
@@ -28,8 +36,6 @@ function Register() {
 
         setErrors({ ...errors, [name]: "" });
     }
-
-    const navigate = useNavigate();
 
     const [register] = useRegisterMutation();
 
@@ -82,6 +88,7 @@ function Register() {
                         Username
                     </label>
                     <input
+                        ref={inputRef}
                         className="form-control"
                         id="username"
                         name="username"

@@ -1,4 +1,4 @@
-import { useEffect, useState } from "react";
+import { useEffect, useRef, useState } from "react";
 import { useDispatch, useSelector } from "react-redux";
 import { useLoginMutation } from "../slices/usersApiSlice";
 import { setCredentials } from "../slices/authSlice";
@@ -17,11 +17,6 @@ function Login() {
     const [errors, setErrors] = useState({});
 
     const { userInfo } = useSelector((state) => state.auth);
-    useEffect(() => {
-        if (userInfo) {
-            navigate(redirectTo);
-        }
-    });
 
     function handleChange(e) {
         const { name, value } = e.target;
@@ -33,6 +28,17 @@ function Login() {
 
     const dispatch = useDispatch();
     const navigate = useNavigate();
+
+    useEffect(() => {
+        if (userInfo) {
+            navigate(redirectTo);
+        }
+    }, [userInfo, navigate, redirectTo]);
+
+    const inputRef = useRef(null);
+    useEffect(() => {
+        inputRef.current.focus();
+    }, []);
 
     const [login] = useLoginMutation();
 
@@ -75,6 +81,7 @@ function Login() {
                         Username
                     </label>
                     <input
+                        ref={inputRef}
                         className="form-control"
                         id="username"
                         name="username"
