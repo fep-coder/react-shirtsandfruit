@@ -3,6 +3,7 @@ var router = express.Router();
 const Product = require("../models/product");
 const multer = require("multer");
 const fs = require("fs");
+const { loggedIn, admin } = require("../middleware/auth");
 
 // GET /api/products - get all products
 router.get("/", async function (req, res, next) {
@@ -41,51 +42,71 @@ const storage = multer.diskStorage({
 const upload = multer({ storage: storage });
 
 // POST /api/products - create new product
-router.post("/", upload.single("image"), async function (req, res) {
-    try {
-        req.body.slug = req.body.name.toLowerCase().trim().replace(/ /g, "-");
-        req.body.image = req.file ? req.file.filename : "noimage.jpg";
+router.post(
+    "/",
+    loggedIn,
+    admin,
+    upload.single("image"),
+    async function (req, res) {
+        try {
+            req.body.slug = req.body.name
+                .toLowerCase()
+                .trim()
+                .replace(/ /g, "-");
+            req.body.image = req.file ? req.file.filename : "noimage.jpg";
 
-        const newProduct = await Product.create(req.body);
+            const newProduct = await Product.create(req.body);
 
-        const folderPath = `./frontend/public/gallery/${newProduct._id}`;
-        if (!fs.existsSync(folderPath)) {
-            fs.mkdirSync(folderPath, { recursive: true });
+            const folderPath = `./frontend/public/gallery/${newProduct._id}`;
+            if (!fs.existsSync(folderPath)) {
+                fs.mkdirSync(folderPath, { recursive: true });
+            }
+
+            res.status(201).json({ message: "Product created" });
+        } catch (error) {
+            res.status(500).json({ message: error.message });
         }
-
-        res.status(201).json({ message: "Product created" });
-    } catch (error) {
-        res.status(500).json({ message: error.message });
     }
-});
+);
 
 // PUT /api/products/:id - update product
-router.put("/:id", upload.single("image"), async function (req, res) {
-    try {
-        req.body.slug = req.body.name.toLowerCase().trim().replace(/ /g, "-");
-        req.body.image = req.file ? req.file.filename : req.body.productImage;
+router.put(
+    "/:id",
+    loggedIn,
+    admin,
+    upload.single("image"),
+    async function (req, res) {
+        try {
+            req.body.slug = req.body.name
+                .toLowerCase()
+                .trim()
+                .replace(/ /g, "-");
+            req.body.image = req.file
+                ? req.file.filename
+                : req.body.productImage;
 
-        await Product.findByIdAndUpdate(req.params.id, req.body);
+            await Product.findByIdAndUpdate(req.params.id, req.body);
 
-        const oldProductImage = req.file ? req.body.productImage : null;
+            const oldProductImage = req.file ? req.body.productImage : null;
 
-        if (oldProductImage && oldProductImage !== "noimage.jpg") {
-            const imagePath = `./frontend/public/images/${oldProductImage}`;
-            if (fs.existsSync(imagePath)) {
-                fs.unlinkSync(imagePath);
-            } else {
-                console.log("File not found");
+            if (oldProductImage && oldProductImage !== "noimage.jpg") {
+                const imagePath = `./frontend/public/images/${oldProductImage}`;
+                if (fs.existsSync(imagePath)) {
+                    fs.unlinkSync(imagePath);
+                } else {
+                    console.log("File not found");
+                }
             }
-        }
 
-        res.status(200).json({ message: "Product updated!" });
-    } catch (error) {
-        res.status(500).json({ message: error.message });
+            res.status(200).json({ message: "Product updated!" });
+        } catch (error) {
+            res.status(500).json({ message: error.message });
+        }
     }
-});
+);
 
 // DELETE /api/products/:id - delete product
-router.delete("/:id", async function (req, res) {
+router.delete("/:id", loggedIn, admin, async function (req, res) {
     try {
         await Product.findByIdAndDelete(req.params.id);
         res.status(200).json({ message: "Product deleted!" });
@@ -111,7 +132,7 @@ router.get("/category/:slug", async function (req, res) {
 });
 
 // POST /api/products/multiupload/:id
-router.post("/multiupload/:id", async function (req, res) {
+router.post("/multiupload/:id", loggedIn, admin, async function (req, res) {
     const id = req.params.id;
     const folderPath = `../frontend/public/gallery/${id}`;
 
@@ -154,7 +175,7 @@ router.get("/images/:id", async function (req, res) {
 });
 
 // POST /api/products/deleteimage - delete image
-router.post("/deleteimage", function (req, res) {
+router.post("/deleteimage", loggedIn, admin, function (req, res) {
     const { id, image } = req.body;
     const imagePath = `./frontend/public/gallery/${id}/${image}`;
 
@@ -167,7 +188,7 @@ router.post("/deleteimage", function (req, res) {
 });
 
 // POST /api/products/:id - delete product
-router.post("/:id", async function (req, res) {
+router.post("/:id", loggedIn, admin, async function (req, res) {
     const product = await Product.findById(req.params.id);
     const image = product.image;
 

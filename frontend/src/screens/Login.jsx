@@ -1,5 +1,5 @@
-import { useState } from "react";
-import { useDispatch } from "react-redux";
+import { useEffect, useState } from "react";
+import { useDispatch, useSelector } from "react-redux";
 import { useLoginMutation } from "../slices/usersApiSlice";
 import { setCredentials } from "../slices/authSlice";
 import { toast } from "react-toastify";
@@ -12,6 +12,13 @@ function Login() {
     });
 
     const [errors, setErrors] = useState({});
+
+    const { userInfo } = useSelector((state) => state.auth);
+    useEffect(() => {
+        if (userInfo) {
+            navigate("/");
+        }
+    });
 
     function handleChange(e) {
         const { name, value } = e.target;

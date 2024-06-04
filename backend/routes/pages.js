@@ -2,6 +2,7 @@ var express = require("express");
 var router = express.Router();
 const Page = require("../models/page");
 const page = require("../models/page");
+const { loggedIn, admin } = require("../middleware/auth");
 
 // GET /api/pages - get all pages
 router.get("/", async function (req, res, next) {
@@ -30,7 +31,7 @@ router.get("/:slug", async function (req, res) {
 });
 
 // POST /api/pages - create new page
-router.post("/", async function (req, res) {
+router.post("/", loggedIn, admin, async function (req, res) {
     try {
         req.body.slug = req.body.name.toLowerCase().trim().replace(/ /g, "-");
 
@@ -43,7 +44,7 @@ router.post("/", async function (req, res) {
 });
 
 // PUT /api/pages/:id - update page
-router.put("/:id", async function (req, res) {
+router.put("/:id", loggedIn, admin, async function (req, res) {
     try {
         req.body.slug = req.body.name.toLowerCase().trim().replace(/ /g, "-");
 
@@ -56,7 +57,7 @@ router.put("/:id", async function (req, res) {
 });
 
 // DELETE /api/pages/:id - delete page
-router.delete("/:id", async function (req, res) {
+router.delete("/:id", loggedIn, admin, async function (req, res) {
     try {
         await Page.findByIdAndDelete(req.params.id);
         res.status(200).json({ message: "Page deleted!" });
@@ -66,7 +67,7 @@ router.delete("/:id", async function (req, res) {
 });
 
 // POST /api/pages/reorder - reorder pages
-router.post("/reorder", async function (req, res) {
+router.post("/reorder", loggedIn, admin, async function (req, res) {
     const idArray = req.body;
 
     try {

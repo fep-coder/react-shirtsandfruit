@@ -2,6 +2,7 @@ var express = require("express");
 var router = express.Router();
 const User = require("../models/user");
 const jwt = require("jsonwebtoken");
+const { loggedIn } = require("../middleware/auth");
 
 // POST /api/users/register - create new user
 router.post("/register", async function (req, res) {
@@ -26,14 +27,16 @@ router.post("/login", async function (req, res) {
 
     if (user && (await user.matchPassword(req.body.password))) {
         const token = jwt.sign({ userId: user._id }, process.env.JWT_SECRET, {
-            expiresIn: "1d",
+            // expiresIn: "1d",
+            expiresIn: "2s",
         });
 
         res.cookie("jwt", token, {
             httpOnly: true,
             sameSite: "Strict",
             secure: process.env.NODE_ENV === "production",
-            maxAge: 86400000,
+            // maxAge: 86400000,
+            maxAge: 2000,
         });
 
         res.json({
@@ -47,7 +50,7 @@ router.post("/login", async function (req, res) {
 });
 
 // POST /api/users/logout - logout user
-router.post("/logout", function (req, res) {
+router.post("/logout", loggedIn, function (req, res) {
     res.clearCookie("jwt");
 
     res.status(200).json({ message: "You have successfully logged out" });
