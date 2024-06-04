@@ -1,4 +1,6 @@
-import { useSelector } from "react-redux";
+import { useDispatch, useSelector } from "react-redux";
+import { addOne, clearCart, deleteItem, remove } from "../slices/cartSlice";
+import { toast } from "react-toastify";
 
 function Cart() {
     const { cartItems } = useSelector((state) => state.cart);
@@ -8,7 +10,27 @@ function Cart() {
         0
     );
 
-    console.log(grandTotal);
+    const dispatch = useDispatch();
+
+    const handleAdd = (id) => {
+        dispatch(addOne(id));
+        toast.success("Item added to cart");
+    };
+
+    const handleRemove = (id) => {
+        dispatch(remove(id));
+        toast.success("Item removed from cart");
+    };
+
+    const handleDelete = (id) => {
+        dispatch(deleteItem(id));
+        toast.success("Item deleted from cart");
+    };
+
+    const handleClearCart = () => {
+        dispatch(clearCart());
+        toast.success("Cart cleared");
+    };
 
     return (
         <div>
@@ -46,10 +68,22 @@ function Cart() {
                                 </td>
                                 <td className="align-middle">
                                     <button
-                                        className="btn btn-danger"
-                                        onClick={() => {}}
+                                        className="btn btn-primary btn-sm mx-1"
+                                        onClick={() => handleAdd(item._id)}
                                     >
-                                        Remove
+                                        +
+                                    </button>
+                                    <button
+                                        className="btn btn-info btn-sm mx-1"
+                                        onClick={() => handleRemove(item._id)}
+                                    >
+                                        -
+                                    </button>
+                                    <button
+                                        className="btn btn-danger btn-sm mx-1"
+                                        onClick={() => handleDelete(item._id)}
+                                    >
+                                        Clear
                                     </button>
                                 </td>
                             </tr>
@@ -70,7 +104,7 @@ function Cart() {
                                 </button>
                                 <button
                                     className="btn btn-danger mx-1"
-                                    onClick={() => {}}
+                                    onClick={handleClearCart}
                                 >
                                     Clear Cart
                                 </button>

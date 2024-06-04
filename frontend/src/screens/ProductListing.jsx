@@ -26,9 +26,12 @@ function ProductListing() {
                     </Link>
                     <h2>{product.name}</h2>
                     <p>Price: ${product.price.toFixed(2)}</p>
-                    <button className="btn btn-sm btn-primary">
+                    <Link
+                        className="btn btn-sm btn-primary"
+                        to={`/product/${product._id}`}
+                    >
                         View product details
-                    </button>
+                    </Link>
                 </div>
             ))}
         </div>
