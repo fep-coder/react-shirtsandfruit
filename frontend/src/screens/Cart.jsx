@@ -1,7 +1,8 @@
 import { useDispatch, useSelector } from "react-redux";
 import { addOne, clearCart, deleteItem, remove } from "../slices/cartSlice";
 import { toast } from "react-toastify";
-import { Link } from "react-router-dom";
+import { Link, useNavigate } from "react-router-dom";
+import { useCreateOrderMutation } from "../slices/ordersApiSlice";
 
 function Cart() {
     const { cartItems } = useSelector((state) => state.cart);
@@ -13,6 +14,10 @@ function Cart() {
 
     const dispatch = useDispatch();
     const { userInfo } = useSelector((state) => state.auth);
+
+    const [createOrder] = useCreateOrderMutation();
+
+    const navigate = useNavigate();
 
     const handleAdd = (id) => {
         dispatch(addOne(id));
@@ -32,6 +37,21 @@ function Cart() {
     const handleClearCart = () => {
         dispatch(clearCart());
         toast.success("Cart cleared");
+    };
+
+    const handleCheckout = async () => {
+        try {
+            await createOrder({
+                items: cartItems,
+                user: userInfo.id,
+                grandTotal,
+            }).unwrap();
+            dispatch(clearCart());
+            toast.success("Order created successfully");
+            navigate("/order-placed");
+        } catch (error) {
+            toast.error(error.data.message);
+        }
     };
 
     return (
@@ -107,7 +127,7 @@ function Cart() {
                                 {userInfo ? (
                                     <button
                                         className="btn btn-primary"
-                                        onClick={() => {}}
+                                        onClick={handleCheckout}
                                     >
                                         Checkout
                                     </button>
