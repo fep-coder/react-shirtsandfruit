@@ -62,12 +62,20 @@ function Header() {
                         </ul>
                         <ul className="navbar-nav justify-content-end w-100">
                             {userInfo ? (
-                                <button
-                                    onClick={handleLogout}
-                                    className="btn btn-danger"
-                                >
-                                    Hi {userInfo.username}, log out
-                                </button>
+                                <>
+                                    <Link
+                                        to="/profile"
+                                        className="btn btn-info mx-2"
+                                    >
+                                        My Profile
+                                    </Link>
+                                    <button
+                                        onClick={handleLogout}
+                                        className="btn btn-danger"
+                                    >
+                                        Hi {userInfo.username}, log out
+                                    </button>
+                                </>
                             ) : (
                                 <>
                                     <li className="nav-item">

@@ -1,6 +1,7 @@
 import { useParams } from "react-router-dom";
 import { useGetPageQuery } from "../slices/pagesApiSlice";
 import Loader from "../components/Loader";
+import HTMLReactParser from "html-react-parser";
 
 function Page() {
     const { slug } = useParams();
@@ -13,7 +14,7 @@ function Page() {
     if (isLoading) return <Loader />;
     if (error) return <p>{error.data.message}</p>;
 
-    return <div>{page?.body}</div>;
+    return <div>{HTMLReactParser(page.body)}</div>;
 }
 
 export default Page;

@@ -19,6 +19,8 @@ import AddProduct from "./screens/Admin/AddProduct.jsx";
 import EditProduct from "./screens/Admin/EditProduct.jsx";
 import Cart from "./screens/Cart.jsx";
 import OrderPlaced from "./screens/OrderPlaced.jsx";
+import PrivateRoute from "./components/PrivateRoute.jsx";
+import Profile from "./screens/Profile.jsx";
 
 ReactDOM.createRoot(document.getElementById("root")).render(
     <React.StrictMode>
@@ -62,6 +64,9 @@ ReactDOM.createRoot(document.getElementById("root")).render(
                                 path="/admin/products/edit/:id"
                                 element={<EditProduct />}
                             />
+                        </Route>
+                        <Route path="" element={<PrivateRoute />}>
+                            <Route path="/profile" element={<Profile />} />
                         </Route>
                     </Route>
                 </Routes>
