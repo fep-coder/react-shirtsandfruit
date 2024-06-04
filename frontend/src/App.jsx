@@ -4,7 +4,7 @@ import Header from "./components/Header";
 import Categories from "./components/Categories";
 import { ToastContainer } from "react-toastify";
 import "react-toastify/dist/ReactToastify.css";
-import Cart from "./components/Cart";
+import SmallCart from "./components/SmallCart";
 
 function App() {
     return (
@@ -14,7 +14,7 @@ function App() {
                 <div className="row">
                     <div className="col-4">
                         <Categories />
-                        <Cart />
+                        <SmallCart />
                     </div>
                     <div className="col-8">
                         <Outlet />

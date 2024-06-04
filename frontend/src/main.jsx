@@ -17,6 +17,7 @@ import EditPage from "./screens/Admin/EditPage.jsx";
 import Products from "./screens/Admin/Products.jsx";
 import AddProduct from "./screens/Admin/AddProduct.jsx";
 import EditProduct from "./screens/Admin/EditProduct.jsx";
+import Cart from "./screens/Cart.jsx";
 
 ReactDOM.createRoot(document.getElementById("root")).render(
     <React.StrictMode>
@@ -35,6 +36,7 @@ ReactDOM.createRoot(document.getElementById("root")).render(
                         />
                         <Route path="/login" element={<Login />} />
                         <Route path="/register" element={<Register />} />
+                        <Route path="/cart" element={<Cart />} />
 
                         <Route path="" element={<AdminRoute />}>
                             <Route path="/admin/pages" element={<Pages />} />
