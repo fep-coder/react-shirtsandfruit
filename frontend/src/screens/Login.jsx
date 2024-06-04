@@ -3,7 +3,7 @@ import { useDispatch, useSelector } from "react-redux";
 import { useLoginMutation } from "../slices/usersApiSlice";
 import { setCredentials } from "../slices/authSlice";
 import { toast } from "react-toastify";
-import { useNavigate } from "react-router-dom";
+import { useNavigate, useSearchParams } from "react-router-dom";
 
 function Login() {
     const [formData, setFormData] = useState({
@@ -11,12 +11,15 @@ function Login() {
         password: "",
     });
 
+    const [searchParams] = useSearchParams();
+    const redirectTo = searchParams.get("redirect") || "/";
+
     const [errors, setErrors] = useState({});
 
     const { userInfo } = useSelector((state) => state.auth);
     useEffect(() => {
         if (userInfo) {
-            navigate("/");
+            navigate(redirectTo);
         }
     });
 
@@ -56,7 +59,7 @@ function Login() {
             try {
                 const userData = await login(formData).unwrap();
                 dispatch(setCredentials({ ...userData }));
-                navigate("/");
+                navigate(redirectTo);
             } catch (error) {
                 toast.error(error?.data?.message);
             }

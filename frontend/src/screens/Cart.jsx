@@ -1,6 +1,7 @@
 import { useDispatch, useSelector } from "react-redux";
 import { addOne, clearCart, deleteItem, remove } from "../slices/cartSlice";
 import { toast } from "react-toastify";
+import { Link } from "react-router-dom";
 
 function Cart() {
     const { cartItems } = useSelector((state) => state.cart);
@@ -11,6 +12,7 @@ function Cart() {
     );
 
     const dispatch = useDispatch();
+    const { userInfo } = useSelector((state) => state.auth);
 
     const handleAdd = (id) => {
         dispatch(addOne(id));
@@ -97,17 +99,28 @@ function Cart() {
                         <tr>
                             <td colSpan="6" className="text-end">
                                 <button
-                                    className="btn btn-primary"
-                                    onClick={() => {}}
-                                >
-                                    Checkout
-                                </button>
-                                <button
                                     className="btn btn-danger mx-1"
                                     onClick={handleClearCart}
                                 >
                                     Clear Cart
                                 </button>
+                                {userInfo ? (
+                                    <button
+                                        className="btn btn-primary"
+                                        onClick={() => {}}
+                                    >
+                                        Checkout
+                                    </button>
+                                ) : (
+                                    <>
+                                        <Link
+                                            className="btn btn-info"
+                                            to="/login?redirect=/cart"
+                                        >
+                                            Log in to checkout
+                                        </Link>
+                                    </>
+                                )}
                             </td>
                         </tr>
                     </tbody>
