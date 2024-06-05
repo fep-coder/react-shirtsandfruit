@@ -2,6 +2,7 @@ import { Link, useParams, useSearchParams } from "react-router-dom";
 import Loader from "../components/Loader";
 import { useGetProductsQuery } from "../slices/productsApiSlice";
 import Rating from "../components/Rating";
+import Pagination from "../components/Pagination";
 
 function ProductListing() {
     const { slug } = useParams();
@@ -39,6 +40,9 @@ function ProductListing() {
                     </Link>
                 </div>
             ))}
+            {data.totalPages > 1 && (
+                <Pagination currentPage={page} totalPages={data.totalPages} />
+            )}
         </div>
     );
 }
