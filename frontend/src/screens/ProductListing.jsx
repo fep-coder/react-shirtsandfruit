@@ -1,4 +1,4 @@
-import { Link, useParams } from "react-router-dom";
+import { Link, useParams, useSearchParams } from "react-router-dom";
 import Loader from "../components/Loader";
 import { useGetProductsQuery } from "../slices/productsApiSlice";
 import Rating from "../components/Rating";
@@ -6,7 +6,10 @@ import Rating from "../components/Rating";
 function ProductListing() {
     const { slug } = useParams();
 
-    const { data: products, isLoading, error } = useGetProductsQuery(slug);
+    const [searchParams] = useSearchParams();
+    const page = searchParams.get("p") || 1;
+
+    const { data, isLoading, error } = useGetProductsQuery({ slug, page });
 
     if (isLoading) return <Loader />;
     if (error) return <p>{error.data.message}</p>;
@@ -16,7 +19,7 @@ function ProductListing() {
             <h1 className="mb-5">
                 {slug.charAt(0).toUpperCase() + slug.slice(1)} products
             </h1>
-            {products?.map((product) => (
+            {data.products?.map((product) => (
                 <div className="col-4 mb-3" key={product._id}>
                     <Link to={`/product/${product._id}`}>
                         <img

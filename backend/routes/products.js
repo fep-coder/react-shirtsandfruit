@@ -117,15 +117,28 @@ router.delete("/:id", loggedIn, admin, async function (req, res) {
 
 // GET /api/products/category/:slug - get products by category slug
 router.get("/category/:slug", async function (req, res) {
-    const slug = req.params.slug;
-
     try {
+        const slug = req.params.slug;
+        const page = req.query.page;
+        const pageSize = 5;
+
+        const query = slug === "all" ? {} : { category: slug };
+        const count = await Product.countDocuments(query);
+
         const products =
             slug === "all"
                 ? await Product.find({})
-                : await Product.find({ category: req.params.slug });
+                      .limit(pageSize)
+                      .skip((page - 1) * pageSize)
+                : await Product.find({ category: slug })
+                      .limit(pageSize)
+                      .skip((page - 1) * pageSize);
 
-        res.status(200).json(products);
+        res.status(200).json({
+            products,
+            page,
+            totalPages: Math.ceil(count / pageSize),
+        });
     } catch (error) {
         res.status(500).json({ message: error.message });
     }
