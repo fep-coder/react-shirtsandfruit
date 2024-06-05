@@ -16,11 +16,6 @@ function AdminHeader() {
                                 Products
                             </Link>
                         </li>
-                        <li className="nav-item">
-                            <Link className="nav-link" to="/admin/orders">
-                                Orders
-                            </Link>
-                        </li>
                     </ul>
                 </div>
             </div>

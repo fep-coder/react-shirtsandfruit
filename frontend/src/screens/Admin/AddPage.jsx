@@ -89,7 +89,7 @@ function AddPage() {
 
                 <div className="mb-3">
                     <label htmlFor="body" className="form-label">
-                        Password
+                        Content
                     </label>
                     <JoditEditor
                         ref={editor}

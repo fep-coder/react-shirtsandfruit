@@ -42,7 +42,7 @@ function Header() {
                         <span className="navbar-toggler-icon"></span>
                     </button>
                     <div className="collapse navbar-collapse" id="navbarNav">
-                        <ul className="navbar-nav">
+                        <ul className="navbar-nav w-100">
                             {error ? (
                                 <p>{error.data.message}</p>
                             ) : (
