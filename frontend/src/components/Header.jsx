@@ -22,7 +22,10 @@ function Header() {
     return (
         <header>
             {userInfo && userInfo.isAdmin && <AdminHeader />}
-            <nav className="navbar navbar-expand-sm bg-body-tertiary">
+            <nav
+                className="navbar navbar-expand-sm bg-body-tertiary"
+                data-bs-theme="dark"
+            >
                 <div className="container-fluid">
                     <Link className="navbar-brand" to="/">
                         Shirts & Fruit

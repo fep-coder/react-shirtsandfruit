@@ -31,7 +31,14 @@ function ProductListing() {
                     </Link>
                     <h2>{product.name}</h2>
                     <Rating rating={product.rating} />
-                    <p>Price: ${product.price.toFixed(2)}</p>
+                    <br />
+                    <p
+                        className="badge bg-success"
+                        style={{ fontSize: "20px", marginTop: "10px" }}
+                    >
+                        Price: ${product.price.toFixed(2)}
+                    </p>
+                    <br />
                     <Link
                         className="btn btn-sm btn-primary"
                         to={`/product/${product._id}`}

@@ -32,7 +32,14 @@ function ProductDetails() {
             <div className="col">
                 <h2>{product.name}</h2>
                 <div>{product.description}</div>
-                <p>Price: ${product.price.toFixed(2)}</p>
+                <br />
+                <p
+                    className="badge bg-success"
+                    style={{ fontSize: "20px", marginTop: "10px" }}
+                >
+                    Price: ${product.price.toFixed(2)}
+                </p>
+                <br />
                 <button className="btn btn-primary" onClick={handleAddToCart}>
                     Add to cart
                 </button>
