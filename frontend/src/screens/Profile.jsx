@@ -1,11 +1,8 @@
-import { useSelector } from "react-redux";
 import { useGetUserOrdersQuery } from "../slices/ordersApiSlice";
 import Loader from "../components/Loader";
 import CardItem from "../components/CardItem";
 
 function Profile() {
-    const { userInfo } = useSelector((state) => state.auth);
-
     const { data: orders, isLoading, error } = useGetUserOrdersQuery();
 
     if (isLoading) return <Loader />;

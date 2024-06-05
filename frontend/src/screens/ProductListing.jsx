@@ -1,6 +1,7 @@
 import { Link, useParams } from "react-router-dom";
 import Loader from "../components/Loader";
 import { useGetProductsQuery } from "../slices/productsApiSlice";
+import Rating from "../components/Rating";
 
 function ProductListing() {
     const { slug } = useParams();
@@ -25,6 +26,7 @@ function ProductListing() {
                         />
                     </Link>
                     <h2>{product.name}</h2>
+                    <Rating rating={product.rating} />
                     <p>Price: ${product.price.toFixed(2)}</p>
                     <Link
                         className="btn btn-sm btn-primary"
