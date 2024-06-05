@@ -98,6 +98,7 @@ function Pages() {
                                     Edit
                                 </Link>
                                 <button
+                                    disabled={page.slug === "home"}
                                     className="btn btn-danger"
                                     onClick={() => deleteHandler(page._id)}
                                 >

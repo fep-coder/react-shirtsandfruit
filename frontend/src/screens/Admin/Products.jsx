@@ -2,12 +2,12 @@ import { Link } from "react-router-dom";
 import Loader from "../../components/Loader";
 import {
     useDeleteProductMutation,
-    useGetProductsQuery,
+    useGetAllProductsQuery,
 } from "../../slices/productsApiSlice";
 import { toast } from "react-toastify";
 
 function Products() {
-    const { data: products, isLoading, error } = useGetProductsQuery("all");
+    const { data: products, isLoading, error } = useGetAllProductsQuery();
     const [deleteProduct] = useDeleteProductMutation();
 
     const handleDelete = async (id) => {
