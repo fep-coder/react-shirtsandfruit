@@ -18,7 +18,7 @@ router.post("/", loggedIn, async function (req, res, next) {
         }
 
         const currentProduct = await Product.findById(product);
-        const rating = currentProduct.ratings + value;
+        const rating = currentProduct.rating + value;
         const totalRatings = await Rating.countDocuments({ product });
 
         const newRating = Math.round((rating / (totalRatings + 1)) * 2) / 2;

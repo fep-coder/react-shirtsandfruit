@@ -1,3 +1,5 @@
+import UserRating from "./UserRating";
+
 function CardItem({ item }) {
     return (
         <div className="col-6 mb-3" key={item._id}>
@@ -14,6 +16,7 @@ function CardItem({ item }) {
                     </p>
                     <p className="card-text">Quantity: {item.quantity}</p>
                     <p className="card-text">Price: ${item.price.toFixed(2)}</p>
+                    <UserRating productId={item._id} />
                 </div>
             </div>
         </div>
