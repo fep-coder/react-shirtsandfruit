@@ -7,6 +7,18 @@ const users = [
         password: bcrypt.hashSync("pass", 10),
         isAdmin: true,
     },
+    {
+        username: "john",
+        email: "john@gmail.com",
+        password: bcrypt.hashSync("pass", 10),
+        isAdmin: false,
+    },
+    {
+        username: "mary",
+        email: "mary@gmail.com",
+        password: bcrypt.hashSync("pass", 10),
+        isAdmin: false,
+    },
 ];
 
 module.exports = users;

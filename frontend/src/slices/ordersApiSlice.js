@@ -12,6 +12,7 @@ const ordersApiSlice = apiSlice.injectEndpoints({
         }),
         getUserOrders: builder.query({
             query: () => "/api/orders/profile",
+            // keepUnusedDataFor: 5,
             providesTags: ["Order"],
         }),
     }),

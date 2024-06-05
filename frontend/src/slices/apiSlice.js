@@ -6,4 +6,5 @@ export const apiSlice = createApi({
     baseQuery,
     tagTypes: ["Product", "Page", "Category", "Order", "Rating"],
     endpoints: () => ({}),
+    // keepUnusedDataFor: 0,
 });

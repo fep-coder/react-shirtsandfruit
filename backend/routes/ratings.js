@@ -45,7 +45,7 @@ router.get("/user/:productId", loggedIn, async function (req, res) {
 
         const ratingValue = rating ? rating.value : 0;
 
-        res.status(200).json({ rating: ratingValue });
+        res.status(200).json(ratingValue);
     } catch (error) {
         res.status(500).json({ message: error.message });
     }

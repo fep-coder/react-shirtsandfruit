@@ -9,7 +9,8 @@ import { toast } from "react-toastify";
 function UserRating({ productId }) {
     const stars = [];
 
-    const { data: userRating } = useGetRatingByUserAndProductQuery(productId);
+    const { data: userRating, refetch } =
+        useGetRatingByUserAndProductQuery(productId);
     const [createRating] = useCreateRatingMutation();
 
     const { userInfo } = useSelector((state) => state.auth);
@@ -21,10 +22,11 @@ function UserRating({ productId }) {
                 product: productId,
                 user: userInfo.id,
             }).unwrap();
+            refetch();
             toast.success("Rating created successfully");
         } catch (error) {
             console.log(error);
-            toast.error("Failed to create rating");
+            toast.error(error.data.message);
         }
     };
 
